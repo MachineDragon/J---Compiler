@@ -1,0 +1,129 @@
+1. Enter the number of hours it took you to complete the project between
+   the <<< and >>> signs below (eg, <<<10>>>).
+
+   <<<65>>>
+   
+2. Enter the difficulty level (1: very easy; 5: very difficult) of the project
+   between the <<< and >>> signs below (eg, <<<3>>>).
+
+   <<<5>>>
+
+3. Provide a short description of how you approached each problem, issues you 
+   encountered, and how you resolved those issues.
+
+   Problem 1 (Long and Double Basic Types):  When trying to solve BasicTypes
+   I first implemented JLiteralLong and JLiteralDouble, working on analyze
+   and codegen for both files. Many hints on piazza helped me with this such
+   as the professor explaining to strip the L from Long Literal. I next edited
+   Type.java putting in boxed_long and double. Inside JVariable I added 2
+   else if statements for Long and Double, and adding what was necessary,
+   I used what was given as a template, such as ILOAD and added in support
+   for LLOAD AND DLOAD to support Long and Doubles as well as implemented
+   each of there respective functions inside STORE. In JBinaryExpression
+   it only had support for Integers so I had to add in support for type
+   Long and Doubles, I implemented support for the rest of the Operations
+   based off JPlusOp. I used a shortcut method of using ctrl-shift-f to search
+   for Type Integers, this helped me locate which files needed Double and Long
+   support, this brought me to edit JArrayInitializer, JunaryExpression and
+   many more files.
+
+   I encountered so many errors trying to solve BasicTypes and this was the
+   most time consuming part. I encountered a fibonacci error and was able
+   to fix it by editing the partial codegen of JMethodDeclaration as the
+   professor suggested on piazza. I also forgot to strip the l in JLiteralLong.
+   I got multiple invalid operand for type errors, as well as a Type Double
+   doesn't match type Int. I was able to fix this error by adding support for
+   double in JNegateOp. I then kept on getting nullpointer errors, I compared
+   bytecodes and my error was in the 3 declaration files. I tried to see on
+   piazza ways people implemented there analysis and codegen however it became
+   too time consuming coming towards the end of the deadline and these files
+   that I edited weren't compiling, after talking to the professor, he gave
+   me his project 4 solutions and I used that, however to see the work
+   I did for this problem it is in the previous submissions not the current
+   one due to the files giving me errors when I try to compile.
+
+
+
+   Problem 2 (Operators): When trying to solve Operators I used the writeup
+   and ctrl-shift-f to go into the necessary jclassfiles that those operators
+   where located. Each separate file had an already solved operator so I
+   used the already given one as a template for the implementation of the
+   other operators. I had to use flow control instructions gotten from
+   Appendix D, for example I had to use IF_ACMPNE in the output branch
+   instruction for JNotEqual. The checklist said to make sure the lhs
+   and rhs have the same type, and after studying the already given
+   operators, I learned about how to check if the types where equal.
+   We have two given methods, mustMatchExpected and mustMatchOneOf. For
+   mustMatchOneOf you can put within the parenthesis the type such as
+   Type.INT and Type.LONG etc. To get the type of a file I would simply add
+   .type after it such as lhs.type() and could use either == or a
+   .matchesExpected to rhs.type().
+
+   The error I got while trying to run this problem was stating it was
+   expecting to find integer on stack. The way I located the problem was by
+   commenting out each separate line in Operators.java. I then would ant and
+   run each line until I got the error, after running bash I figured out it
+   was the *= operator that I had implemented incorrectly. I had incorrectly
+   put loadLhsLvalue which should have been loadLhsRvalue, a one character
+   mistake. I also had a++ printing out 5 instead of 4, I fixed this in
+   JPostIncrement by adding the output.addIINCInstruction(offset, 1) function
+   to after the if statement as I previously had it before the if statement
+   which messed up giving me the correct output.
+
+
+   Problem 3 (Conditional Expression): To solve Problem 3 I used JIfStatement
+   that the professor gave me as a template. The JIfStatement analyze had
+   methods that I needed to use in JConditionalExpression, such as how
+   to first analyze the condition, then make sure its a boolean as well
+   as the consequent and alternate and setting there types afterwards.
+
+   I ran into error "Cannot resolve method 'type' in JStatement", I fixed
+   this issue by changing private JStatement to JExpression as well as by
+   importing CL Constants.
+
+
+   Problem 5 (Do-While Statement):Implementing analyze was easy, I just went
+   off the checklist however on codegen I kept implementing it the wrong way.
+   I went on piazza and saw a post where the professor explained the correct
+   way to implement it, first create a top and bottom label, then start the
+   loop and call the body code, followed by testing the condition, if its
+   false I used a GOTO statement to go to the bottomLabel and leave the loop,
+   also a condition test if true go to the topLabel and repeat the loop
+   until its false in which case it will exit the loop.
+
+   Error:
+   class jminusminus.JBlock cannot be cast to class jminusminus.JExpression
+   To fix this I had to change JExpression to JStatement
+
+   I also got stuck in an infinite loop when running, I had to change
+   condition.codegen(output, topLabel, true);
+   to go to the bottomLabel instead when false and it escaped the infinite
+   loop fixing my problem.
+
+4. Did you receive help from anyone? List their names, status (classmate, 
+   CS451/651 grad, TA, other), and the nature of help received.
+
+   Name               Status       Help Received
+   ----               ------       -------------
+
+  Swami Iyer          Professor    Gave me Project 4 Solutions to complete
+                                   Project 5, piazza error help
+
+  Bruno               Student      Answered my post on Piazza
+
+  Ayah                Student      Tried to find my error on piazza
+
+
+5. List any other comments here. Feel free to provide any feedback on how
+   much you learned from doing the assignment, and whether you enjoyed
+   doing it.
+
+   This project taught me a lot about implementing Long and Double support
+   in the j-- compiler. It also taught me how to check the types of files
+   and how to compare, analyze and implement them. The Professor was very
+   generous this project and gave me the Project 4 Solutions after not
+   being able to correctly compile a single problem and extending the deadline
+   for when this project was due. I spent the most time on problem 1 without
+   success. I put in a lot of effort and felt it was a good learning
+   experience for me now that I tried my hardest and was able to get some
+   problems to compile.
